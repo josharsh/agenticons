@@ -2,7 +2,9 @@
 Last touched: 2026-07-08
 
 ## Latest
-- v0.2.0 published: craft pass — corners rounded in path geometry via `roundedPolygon()/diamond()/hexagon()` helpers in `src/definitions.mjs`; handoff/handoff-human redrawn. Gallery (`npm run gallery` → gallery.html) is the local viewer.
+- v0.2.2 published: launch-ready README (visual-first template from npm-marketing research, saved knowledge in git log + this session), search-tuned description/keywords (incl. lucide/heroicons intercept terms), gallery hosted at https://josharsh.github.io/agenticons/ (docs/index.html, GitHub Pages).
+- v0.2.0–0.2.1: craft pass — rounded corner geometry via `roundedPolygon()/diamond()/hexagon()` helpers; human-in-the-loop spacing fix; gallery has theme toggle (?theme=light|dark), grammar legend, scaled/absolute stroke.
+- Launch playbook (user actions, from research): set GitHub social preview card; seed stars from network BEFORE public launch; fire HN+Twitter+Reddit within 48h; answer every HN comment; patch-publish npm right before launch so README snapshot is fresh.
 
 ## Now
 - **Shipped**: `agenticons@0.1.0` live on npm; repo public at github.com/josharsh/agenticons with v0.1.0 release. 51 icons, 10 categories, React ESM/CJS/types + raw SVGs + metadata.json, tests + typecheck green, verified end-to-end from the public registry.
