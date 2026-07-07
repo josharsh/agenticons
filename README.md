@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/agenticons)](https://www.npmjs.com/package/agenticons)
 [![license](https://img.shields.io/npm/l/agenticons)](./LICENSE)
 
-![All agenticons](./preview.svg)
+![All agenticons](https://raw.githubusercontent.com/josharsh/agenticons/main/preview.svg)
 
 ## Why
 
