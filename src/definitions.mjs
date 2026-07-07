@@ -133,8 +133,8 @@ export const icons = {
     category: 'agents',
     tags: ['approval', 'review', 'oversight', 'hitl', 'supervision'],
     elements: [
-      ['circle', { cx: '12', cy: '9', r: '3' }],
-      ['path', { d: 'M17 18a5 5 0 0 0-10 0' }],
+      ['circle', { cx: '12', cy: '9.5', r: '2.5' }],
+      ['path', { d: 'M15.5 17.5a3.5 3.5 0 0 0-7 0' }],
       ['path', { d: 'M12 2.5a9.5 9.5 0 0 1 9.5 9.5' }],
       ['path', { d: 'M12 21.5A9.5 9.5 0 0 1 2.5 12' }],
     ],
