@@ -3,7 +3,7 @@
  * Search, category filter, size/stroke/absolute controls, theme toggle,
  * copy import/SVG. Screenshot-ready for the README (?theme=light|dark).
  */
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { icons, categories } from '../src/definitions.mjs';
@@ -443,4 +443,6 @@ apply();
 `;
 
 await writeFile(path.join(root, 'gallery.html'), html);
-console.log(`gallery.html written (${data.length} icons, v${version})`);
+await mkdir(path.join(root, 'docs'), { recursive: true });
+await writeFile(path.join(root, 'docs', 'index.html'), html);
+console.log(`gallery.html + docs/index.html written (${data.length} icons, v${version})`);
