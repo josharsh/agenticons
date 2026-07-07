@@ -2,17 +2,20 @@
 Last touched: 2026-07-07
 
 ## Now
-- Research + ideation phase for an AI/agentic-era icon library. Two research reports saved in `research/` (icon-library engineering teardown, AI icon landscape + gaps).
+- **Shipped**: `agenticons@0.1.0` live on npm; repo public at github.com/josharsh/agenticons with v0.1.0 release. 51 icons, 10 categories, React ESM/CJS/types + raw SVGs + metadata.json, tests + typecheck green, verified end-to-end from the public registry.
 
 ## Next
-- Pick a name and lock the visual grammar (primitives + modifiers + state ring).
-- Draft the first 12 "flagship" glyphs (agent, tool call, MCP, context window, token, handoff, HITL, grounding) in Figma or hand-coded SVG.
-- Scaffold repo: `icons/*.svg` + per-icon JSON metadata → codegen React package (Lucide-spec-compatible: 24×24, 2px stroke, currentColor).
+- Launch content: anti-sparkle post (NN/g data is the hook) for HN/design Twitter; research reports in `research/` are the raw material.
+- Docs site with icon search (embedding-powered search = unclaimed edge; see research/01).
+- Grow the set: tier-2 gaps still open — `eval-suite`, `model-picker`, `approval-gate` variants, stateful/animated tier (pending/running/error states per icon).
+- Icons-as-MCP-server distribution + SEP-973 icon CDN idea (see research/02 §5).
 
 ## Blockers / Open questions
-- Name not chosen yet.
-- Static-first vs animated-first for v1 (recommendation: static SVGs with CSS-animatable state variants, no Lottie).
+- None. npm + gh auth both work from this machine.
 
 ## Decisions
-- 2026-07-07: Target the agentic-concept whitespace (agent, tool call, MCP, context, token, handoff…) — brand logos (Lobe) and gen-media sparkle sets (Hugeicons) are saturated; npm has zero agentic-concept sets.
-- 2026-07-07: Positioning = anti-sparkle "notation, not metaphor" — compositional symbol grammar + built-in state variants; Lucide-compatible spec for drop-in adoption via shadcn/AI Elements ecosystem.
+- 2026-07-07: Name = `agenticons` (npm was free; `agentic-icons` taken). Single React package, per-icon files, `sideEffects: false`.
+- 2026-07-07: Source of truth = `src/definitions.mjs` (JS objects, not SVG files); build validates spec then emits esm/cjs/types/svg/metadata. Deviation from Lucide's per-SVG-file convention, chosen for iteration speed.
+- 2026-07-07: Lucide-compatible spec (24×24, 2px stroke, round caps, currentColor) so icons mix seamlessly with lucide-react in shadcn apps — that's the adoption path.
+- 2026-07-07: Icons named by meaning (`grounding`), not appearance — this is semantic notation; documented in README.
+- 2026-07-07: Target agentic-concept whitespace; anti-sparkle positioning (research saved in `research/`).
