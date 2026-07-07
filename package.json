@@ -1,6 +1,6 @@
 {
   "name": "agenticons",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Icons for the agentic era — a notation for AI primitives: agents, tool calls, MCP, context windows, tokens, RAG, evals and more. Lucide-compatible 24×24 stroke icons for React.",
   "keywords": [
     "icons",

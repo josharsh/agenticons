@@ -12,7 +12,52 @@
  *   brackets  = context (a container the model can see)
  *   tile      = a token
  *   dot ("h.01") = a data point
+ *
+ * Craft rules (why the helpers exist): corners are rounded IN the path
+ * geometry — sharp polygon joins read as machine-drawn. Radius scales
+ * with shape size (~2px on large shapes, ~1px on small), matching the
+ * corner language of the wider Lucide-style ecosystem.
  */
+
+const f = (n) => +n.toFixed(2);
+
+/** Rounded polygon: points in clockwise screen order, corner radius cr. */
+const roundedPolygon = (pts, cr) => {
+  let d = '';
+  const n = pts.length;
+  for (let i = 0; i < n; i++) {
+    const [px, py] = pts[i];
+    const [ax, ay] = pts[(i - 1 + n) % n];
+    const [bx, by] = pts[(i + 1) % n];
+    const v1 = [ax - px, ay - py];
+    const v2 = [bx - px, by - py];
+    const l1 = Math.hypot(...v1);
+    const l2 = Math.hypot(...v2);
+    const u1 = [v1[0] / l1, v1[1] / l1];
+    const u2 = [v2[0] / l2, v2[1] / l2];
+    const angle = Math.acos(u1[0] * u2[0] + u1[1] * u2[1]);
+    const t = cr / Math.tan(angle / 2);
+    const p1 = [px + u1[0] * t, py + u1[1] * t];
+    const p2 = [px + u2[0] * t, py + u2[1] * t];
+    d += `${i === 0 ? 'M' : 'L'}${f(p1[0])} ${f(p1[1])}`;
+    d += `A${f(cr)} ${f(cr)} 0 0 1 ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return d + 'Z';
+};
+
+/** The model/agent mark: a diamond with rounded vertices. */
+const diamond = (cx, cy, r, cr = Math.max(1, f(r * 0.3))) =>
+  roundedPolygon([[cx, cy - r], [cx + r, cy], [cx, cy + r], [cx - r, cy]], cr);
+
+/** The tool mark: a pointy-top hexagon with rounded vertices. */
+const hexagon = (cx, cy, r, cr = Math.max(1, f(r * 0.22))) => {
+  const w = f(r * Math.cos(Math.PI / 6));
+  const h = f(r / 2);
+  return roundedPolygon(
+    [[cx, cy - r], [cx + w, cy - h], [cx + w, cy + h], [cx, cy + r], [cx - w, cy + h], [cx - w, cy - h]],
+    cr
+  );
+};
 
 export const icons = {
   /* ------------------------------------------------------------------ *
@@ -22,7 +67,7 @@ export const icons = {
     category: 'agents',
     tags: ['ai', 'autonomous', 'assistant', 'bot', 'llm'],
     elements: [
-      ['path', { d: 'M12 6.5 17.5 12 12 17.5 6.5 12Z' }],
+      ['path', { d: diamond(12, 12, 5.5) }],
       ['path', { d: 'M12 3a9 9 0 0 1 9 9' }],
       ['path', { d: 'M12 21a9 9 0 0 1-9-9' }],
     ],
@@ -31,25 +76,25 @@ export const icons = {
     category: 'agents',
     tags: ['multi-agent', 'team', 'fleet', 'parallel'],
     elements: [
-      ['path', { d: 'M8 3 13 8 8 13 3 8Z' }],
-      ['path', { d: 'M16 11 21 16 16 21 11 16Z' }],
+      ['path', { d: diamond(8, 8, 5) }],
+      ['path', { d: diamond(16, 16, 5) }],
     ],
   },
   subagent: {
     category: 'agents',
     tags: ['child', 'spawn', 'delegate', 'worker', 'task'],
     elements: [
-      ['path', { d: 'M8.5 3 14 8.5 8.5 14 3 8.5Z' }],
-      ['path', { d: 'M17.5 14 21 17.5 17.5 21 14 17.5Z' }],
+      ['path', { d: diamond(8.5, 8.5, 5.5) }],
+      ['path', { d: diamond(17.5, 17.5, 3.5) }],
     ],
   },
   swarm: {
     category: 'agents',
     tags: ['multi-agent', 'distributed', 'collective', 'parallel'],
     elements: [
-      ['path', { d: 'M12 2 15.5 5.5 12 9 8.5 5.5Z' }],
-      ['path', { d: 'M5.5 13.5 9 17 5.5 20.5 2 17Z' }],
-      ['path', { d: 'M18.5 13.5 22 17 18.5 20.5 15 17Z' }],
+      ['path', { d: diamond(12, 5.5, 3.5) }],
+      ['path', { d: diamond(5.5, 17, 3.5) }],
+      ['path', { d: diamond(18.5, 17, 3.5) }],
     ],
   },
   orchestration: {
@@ -60,30 +105,28 @@ export const icons = {
       ['path', { d: 'M12 6.5V13' }],
       ['path', { d: 'M10.6 6 6 13.5' }],
       ['path', { d: 'M13.4 6 18 13.5' }],
-      ['path', { d: 'M5 14.5 8 17.5 5 20.5 2 17.5Z' }],
-      ['path', { d: 'M12 14.5 15 17.5 12 20.5 9 17.5Z' }],
-      ['path', { d: 'M19 14.5 22 17.5 19 20.5 16 17.5Z' }],
+      ['path', { d: diamond(5, 17.5, 3) }],
+      ['path', { d: diamond(12, 17.5, 3) }],
+      ['path', { d: diamond(19, 17.5, 3) }],
     ],
   },
   handoff: {
     category: 'agents',
     tags: ['transfer', 'delegate', 'agent-to-agent', 'pass'],
     elements: [
-      ['path', { d: 'M5.5 8.5 9 12 5.5 15.5 2 12Z' }],
-      ['path', { d: 'M10.5 12h2.5' }],
-      ['path', { d: 'm12 10 2 2-2 2' }],
-      ['path', { d: 'M18.5 8.5 22 12 18.5 15.5 15 12Z' }],
+      ['path', { d: diamond(5.5, 12, 3.5) }],
+      ['path', { d: 'm10.75 9.5 2.5 2.5-2.5 2.5' }],
+      ['path', { d: diamond(18.5, 12, 3.5) }],
     ],
   },
   'handoff-human': {
     category: 'agents',
     tags: ['escalation', 'transfer', 'agent-to-human', 'support'],
     elements: [
-      ['path', { d: 'M5.5 8.5 9 12 5.5 15.5 2 12Z' }],
-      ['path', { d: 'M10.5 12h2' }],
-      ['path', { d: 'm11.5 10 2 2-2 2' }],
-      ['circle', { cx: '18', cy: '9', r: '2.5' }],
-      ['path', { d: 'M22 17a4 4 0 0 0-8 0' }],
+      ['path', { d: diamond(5.5, 12, 3.5) }],
+      ['path', { d: 'm10.25 9.5 2.5 2.5-2.5 2.5' }],
+      ['circle', { cx: '17.5', cy: '9', r: '2.5' }],
+      ['path', { d: 'M21.5 17a4 4 0 0 0-8 0' }],
     ],
   },
   'human-in-the-loop': {
@@ -104,7 +147,7 @@ export const icons = {
       ['path', { d: 'M18 2.2v4.3h-4.3' }],
       ['path', { d: 'M20 12a8 8 0 0 1-13.7 5.7' }],
       ['path', { d: 'M6 21.8v-4.3h4.3' }],
-      ['path', { d: 'M12 9.5 14.5 12 12 14.5 9.5 12Z' }],
+      ['path', { d: diamond(12, 12, 3.5) }],
     ],
   },
 
@@ -115,7 +158,7 @@ export const icons = {
     category: 'models',
     tags: ['llm', 'foundation-model', 'neural-network', 'ai'],
     elements: [
-      ['path', { d: 'M12 4 20 12 12 20 4 12Z' }],
+      ['path', { d: diamond(12, 12, 8, 2.2) }],
       ['path', { d: 'M12 12h.01' }],
     ],
   },
@@ -123,7 +166,7 @@ export const icons = {
     category: 'models',
     tags: ['router', 'fallback', 'gateway', 'load-balancer', 'picker'],
     elements: [
-      ['path', { d: 'M5.5 8.5 9 12 5.5 15.5 2 12Z' }],
+      ['path', { d: diamond(5.5, 12, 3.5) }],
       ['path', { d: 'M9.5 12h4' }],
       ['path', { d: 'M13.5 12 17.5 7' }],
       ['path', { d: 'M13.5 12h5' }],
@@ -137,7 +180,7 @@ export const icons = {
     category: 'models',
     tags: ['generate', 'forward-pass', 'predict', 'run', 'output'],
     elements: [
-      ['path', { d: 'M8 7 13 12 8 17 3 12Z' }],
+      ['path', { d: diamond(8, 12, 5) }],
       ['path', { d: 'M15.5 12H21' }],
       ['path', { d: 'm18.5 9.5 2.5 2.5-2.5 2.5' }],
     ],
@@ -146,7 +189,7 @@ export const icons = {
     category: 'models',
     tags: ['training', 'adapt', 'lora', 'customize', 'sliders'],
     elements: [
-      ['path', { d: 'M12 3 16.5 7.5 12 12 7.5 7.5Z' }],
+      ['path', { d: diamond(12, 7.5, 4.5) }],
       ['path', { d: 'M5 16.5h14' }],
       ['circle', { cx: '9.5', cy: '16.5', r: '1.5' }],
       ['path', { d: 'M5 20.5h14' }],
@@ -252,7 +295,7 @@ export const icons = {
     category: 'tools',
     tags: ['function', 'capability', 'action', 'plugin'],
     elements: [
-      ['path', { d: 'M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9Z' }],
+      ['path', { d: hexagon(12, 12, 9, 2) }],
       ['circle', { cx: '12', cy: '12', r: '2.5' }],
     ],
   },
@@ -260,10 +303,10 @@ export const icons = {
     category: 'tools',
     tags: ['function-calling', 'invoke', 'execute', 'action'],
     elements: [
-      ['path', { d: 'M15.5 5.5 21 8.75v6.5l-5.5 3.25L10 15.25v-6.5Z' }],
+      ['path', { d: hexagon(15.5, 12, 6, 1.6) }],
       ['circle', { cx: '15.5', cy: '12', r: '2' }],
-      ['path', { d: 'M2.5 12H7' }],
-      ['path', { d: 'm5 9.5 2.5 2.5L5 14.5' }],
+      ['path', { d: 'M2.5 12h5' }],
+      ['path', { d: 'm5.5 9.5 2.5 2.5-2.5 2.5' }],
     ],
   },
   mcp: {
@@ -427,7 +470,6 @@ export const icons = {
     elements: [
       ['path', { d: 'M4 19h4a2 2 0 0 0 2-2v-3a2 2 0 0 1 2-2h3a2 2 0 0 0 2-2V5' }],
       ['path', { d: 'M14.5 7.5 17 5l2.5 2.5' }],
-      ['path', { d: 'M4 19h.01' }],
     ],
   },
   'chain-of-thought': {
@@ -476,9 +518,9 @@ export const icons = {
       ['path', { d: 'M16 3.5h2A2.5 2.5 0 0 1 20.5 6v2' }],
       ['path', { d: 'M3.5 16v2A2.5 2.5 0 0 0 6 20.5h2' }],
       ['path', { d: 'M20.5 16v2a2.5 2.5 0 0 1-2.5 2.5h-2' }],
-      ['path', { d: 'M12 8l3.5 2v4L12 16l-3.5-2v-4Z' }],
-      ['path', { d: 'm8.5 10 3.5 2 3.5-2' }],
-      ['path', { d: 'M12 12v4' }],
+      ['path', { d: roundedPolygon([[12, 8], [15.5, 10], [15.5, 14], [12, 16], [8.5, 14], [8.5, 10]], 0.9) }],
+      ['path', { d: 'm8.7 10.2 3.3 1.9 3.3-1.9' }],
+      ['path', { d: 'M12 12.1V16' }],
     ],
   },
   evaluation: {
@@ -558,7 +600,7 @@ export const icons = {
       ['path', { d: 'M3 9h18' }],
       ['path', { d: 'M6 6.5h.01' }],
       ['path', { d: 'M9 6.5h.01' }],
-      ['path', { d: 'M12 11.5 15 14.5 12 17.5 9 14.5Z' }],
+      ['path', { d: diamond(12, 14.5, 3) }],
     ],
   },
   'voice-agent': {
@@ -567,7 +609,7 @@ export const icons = {
     elements: [
       ['path', { d: 'M3 10v4' }],
       ['path', { d: 'M7 7v10' }],
-      ['path', { d: 'M12 8.5 15.5 12 12 15.5 8.5 12Z' }],
+      ['path', { d: diamond(12, 12, 3.5) }],
       ['path', { d: 'M17 7v10' }],
       ['path', { d: 'M21 10v4' }],
     ],

@@ -2,10 +2,14 @@
  * Generates gallery.html — a self-contained, offline viewer for all icons.
  * Search, category filter, size/stroke controls, copy import/SVG.
  */
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { icons, categories } from '../src/definitions.mjs';
+
+const version = JSON.parse(
+  await readFile(new URL('../package.json', import.meta.url), 'utf8')
+).version;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pascal = (n) => n.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
@@ -201,7 +205,7 @@ const html = `<!doctype html>
 
 <footer>
   <span>24×24 grid · 2px stroke · currentColor · MIT</span>
-  <span>agenticons v0.1.0</span>
+  <span>agenticons v${version}</span>
   <a href="https://github.com/josharsh/agenticons">github.com/josharsh/agenticons</a>
 </footer>
 
