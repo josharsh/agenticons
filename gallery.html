@@ -161,6 +161,10 @@
     <button data-stroke="1.5">1.5</button>
     <button data-stroke="2" aria-pressed="true">2</button>
   </div>
+  <div class="seg" role="group" aria-label="Stroke scaling" id="abs-seg">
+    <button data-abs="false" aria-pressed="true" title="Stroke scales with size (SVG default)">scaled</button>
+    <button data-abs="true" title="Stroke stays at true px — the absoluteStrokeWidth prop">absolute</button>
+  </div>
 </div>
 <div class="cats" id="cats" role="group" aria-label="Filter by category"></div>
 
@@ -288,17 +292,34 @@ cats.addEventListener('click', (e) => {
   apply();
 });
 
+let size = 24;
+let absolute = false;
+
+function updateStrokes() {
+  const w = absolute ? (Number(stroke) * 24) / size : Number(stroke);
+  for (const svg of main.querySelectorAll('svg')) svg.setAttribute('stroke-width', +w.toFixed(3));
+}
+
 document.getElementById('size-seg').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
+  size = Number(b.dataset.size);
   for (const btn of b.parentElement.children) btn.setAttribute('aria-pressed', btn === b);
-  document.body.style.setProperty('--icon-size', b.dataset.size + 'px');
+  document.body.style.setProperty('--icon-size', size + 'px');
+  updateStrokes();
 });
 
 document.getElementById('stroke-seg').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
   stroke = b.dataset.stroke;
   for (const btn of b.parentElement.children) btn.setAttribute('aria-pressed', btn === b);
-  for (const svg of main.querySelectorAll('svg')) svg.setAttribute('stroke-width', stroke);
+  updateStrokes();
+});
+
+document.getElementById('abs-seg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  absolute = b.dataset.abs === 'true';
+  for (const btn of b.parentElement.children) btn.setAttribute('aria-pressed', btn === b);
+  updateStrokes();
 });
 
 main.addEventListener('keydown', (e) => {
