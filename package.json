@@ -52,7 +52,8 @@
     "test": "npm run build && node --test test/",
     "typecheck": "npm run build && tsc -p tsconfig.json",
     "preview": "node scripts/preview.mjs",
-    "prepublishOnly": "npm run test && npm run typecheck"
+    "prepublishOnly": "npm run test && npm run typecheck",
+    "gallery": "node scripts/gallery.mjs"
   },
   "peerDependencies": {
     "react": ">=16.8.0"
