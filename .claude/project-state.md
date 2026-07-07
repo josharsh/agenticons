@@ -1,5 +1,8 @@
 # Project State
-Last touched: 2026-07-07
+Last touched: 2026-07-08
+
+## Latest
+- v0.2.0 published: craft pass — corners rounded in path geometry via `roundedPolygon()/diamond()/hexagon()` helpers in `src/definitions.mjs`; handoff/handoff-human redrawn. Gallery (`npm run gallery` → gallery.html) is the local viewer.
 
 ## Now
 - **Shipped**: `agenticons@0.1.0` live on npm; repo public at github.com/josharsh/agenticons with v0.1.0 release. 51 icons, 10 categories, React ESM/CJS/types + raw SVGs + metadata.json, tests + typecheck green, verified end-to-end from the public registry.
