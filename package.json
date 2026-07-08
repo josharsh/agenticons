@@ -1,6 +1,6 @@
 {
   "name": "agenticons",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "AI & agent icons for React — 51 icons for agents, MCP, tool calls, RAG, tokens, context windows, evals. Lucide-compatible, tree-shakeable, TypeScript, MIT.",
   "keywords": [
     "icons",

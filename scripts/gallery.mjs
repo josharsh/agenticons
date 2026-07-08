@@ -32,7 +32,8 @@ const legendSvg = (els) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner(els)}</svg>`;
 const legend = [
   [legendSvg([icons.model.elements[0]]), 'model'],
-  [legendSvg(icons.agent.elements.slice(1)), 'autonomy'],
+  [legendSvg(icons.agent.elements), 'agency'],
+  [legendSvg(icons['human-in-the-loop'].elements.slice(2)), 'autonomy'],
   [legendSvg(icons['human-in-the-loop'].elements.slice(0, 2)), 'human'],
   [legendSvg([icons.tool.elements[0]]), 'tool'],
   [legendSvg(icons['context-window'].elements.slice(0, 2)), 'context'],

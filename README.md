@@ -59,6 +59,7 @@ Like circuit symbols or map legends, everything composes from a few primitives �
 | Primitive | Meaning |
 |---|---|
 | ◇ diamond | a model (LLM) |
+| eyes inside a diamond | an actor — a model with agency |
 | arcs orbiting a mark | autonomy |
 | person | a human |
 | ⬡ hexagon | a tool |
@@ -66,7 +67,7 @@ Like circuit symbols or map legends, everything composes from a few primitives �
 | ▢ rounded tile | a token |
 | · dot | a data point |
 
-So **agent** = model + autonomy orbit. **Handoff** = model → model. **Tool call** = arrow into a hexagon. **Grounding** = the electrical ground symbol. **Hallucination** = the same mark, cut off from ground. **Human-in-the-loop** = a person inside the orbit.
+So **agent** = a model that looks back at you. **Subagent** = a child spawned off a branch. **Swarm** = small models flying in formation. **Handoff** = model → model. **Tool call** = arrow into a hexagon. **Grounding** = the electrical ground symbol. **Hallucination** = a model whose outline isn't really there. **Human-in-the-loop** = a person inside the orbit.
 
 ## What's inside
 

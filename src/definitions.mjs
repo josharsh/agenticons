@@ -6,12 +6,14 @@
  *
  * The visual grammar (see README):
  *   diamond   = a model (LLM)
+ *   eyes      = an actor (a model with agency looks back at you)
  *   orbit     = autonomy (arcs circling a mark)
  *   person    = a human
  *   hexagon   = a tool
  *   brackets  = context (a container the model can see)
  *   tile      = a token
  *   dot ("h.01") = a data point
+ *   broken outline = not real (hallucination)
  *
  * Craft rules (why the helpers exist): corners are rounded IN the path
  * geometry — sharp polygon joins read as machine-drawn. Radius scales
@@ -67,9 +69,9 @@ export const icons = {
     category: 'agents',
     tags: ['ai', 'autonomous', 'assistant', 'bot', 'llm'],
     elements: [
-      ['path', { d: diamond(12, 12, 5.5) }],
-      ['path', { d: 'M12 3a9 9 0 0 1 9 9' }],
-      ['path', { d: 'M12 21a9 9 0 0 1-9-9' }],
+      ['path', { d: diamond(12, 12, 8, 2.2) }],
+      ['path', { d: 'M9.5 10.5v2.5' }],
+      ['path', { d: 'M14.5 10.5v2.5' }],
     ],
   },
   agents: {
@@ -84,17 +86,19 @@ export const icons = {
     category: 'agents',
     tags: ['child', 'spawn', 'delegate', 'worker', 'task'],
     elements: [
-      ['path', { d: diamond(8.5, 8.5, 5.5) }],
-      ['path', { d: diamond(17.5, 17.5, 3.5) }],
+      ['path', { d: diamond(7, 6.5, 4) }],
+      ['path', { d: 'M7 12.5v3a2.5 2.5 0 0 0 2.5 2.5h2' }],
+      ['path', { d: diamond(17, 18, 3.5) }],
     ],
   },
   swarm: {
     category: 'agents',
-    tags: ['multi-agent', 'distributed', 'collective', 'parallel'],
+    tags: ['multi-agent', 'distributed', 'collective', 'parallel', 'emergence'],
     elements: [
-      ['path', { d: diamond(12, 5.5, 3.5) }],
-      ['path', { d: diamond(5.5, 17, 3.5) }],
-      ['path', { d: diamond(18.5, 17, 3.5) }],
+      ['path', { d: diamond(12, 5.5, 3) }],
+      ['path', { d: diamond(5.5, 12, 3) }],
+      ['path', { d: diamond(18.5, 12, 3) }],
+      ['path', { d: diamond(12, 18.5, 3) }],
     ],
   },
   orchestration: {
@@ -311,11 +315,13 @@ export const icons = {
   },
   mcp: {
     category: 'tools',
-    tags: ['model-context-protocol', 'connection', 'integration', 'protocol', 'socket'],
+    tags: ['model-context-protocol', 'connection', 'integration', 'protocol', 'plug', 'socket'],
     elements: [
-      ['rect', { x: '4', y: '4', width: '16', height: '16', rx: '4' }],
-      ['path', { d: 'M9.5 10v4' }],
-      ['path', { d: 'M14.5 10v4' }],
+      ['path', { d: 'M2.5 12h2.5' }],
+      ['rect', { x: '5', y: '8.5', width: '5.5', height: '7', rx: '1.75' }],
+      ['path', { d: 'M10.5 10h6.5' }],
+      ['path', { d: 'M10.5 14h6.5' }],
+      ['path', { d: 'M16 6.5h2.5a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H16' }],
     ],
   },
   'mcp-server': {
@@ -393,13 +399,13 @@ export const icons = {
   },
   hallucination: {
     category: 'retrieval',
-    tags: ['ungrounded', 'confabulation', 'error', 'fabrication'],
+    tags: ['ungrounded', 'confabulation', 'error', 'fabrication', 'unreal'],
     elements: [
-      ['circle', { cx: '12', cy: '6', r: '2.5' }],
-      ['path', { d: 'M12 10v2' }],
-      ['path', { d: 'M12 14.5v2' }],
-      ['path', { d: 'M4.5 19H10' }],
-      ['path', { d: 'M14 19h5.5' }],
+      ['path', { d: 'M13.75 5.75 18.25 10.25' }],
+      ['path', { d: 'M18.25 13.75 13.75 18.25' }],
+      ['path', { d: 'M10.25 18.25 5.75 13.75' }],
+      ['path', { d: 'M5.75 10.25 10.25 5.75' }],
+      ['path', { d: 'M12 12h.01' }],
     ],
   },
 
@@ -501,13 +507,13 @@ export const icons = {
    * ------------------------------------------------------------------ */
   guardrails: {
     category: 'ops',
-    tags: ['safety', 'constraints', 'policy', 'limits', 'moderation'],
+    tags: ['safety', 'constraints', 'policy', 'limits', 'moderation', 'lane'],
     elements: [
-      ['path', { d: 'M5 4v16' }],
-      ['path', { d: 'M19 4v16' }],
-      ['path', { d: 'M12 5v3' }],
+      ['path', { d: 'M8 3 4 21' }],
+      ['path', { d: 'm16 3 4 18' }],
+      ['path', { d: 'M12 4.5v3' }],
       ['path', { d: 'M12 10.5v3' }],
-      ['path', { d: 'M12 16v3' }],
+      ['path', { d: 'M12 16.5v3' }],
     ],
   },
   sandbox: {
